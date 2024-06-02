@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Árvore com Folhas Interativas</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #87CEEB;
+        }
+        #tree {
+            position: relative;
+            width: 200px;
+            height: 300px;
+            background-color: #8B4513;
+            border-radius: 20px 20px 0 0;
+        }
+        .leaf {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: green;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 2s, top 2s;
+        }
+    </style>
+</head>
+<body>
+    <div id="tree">
+        <div class="leaf" style="top: 20px; left: 50px;"></div>
+        <div class="leaf" style="top: 50px; left: 80px;"></div>
+        <div class="leaf" style="top: 100px; left: 30px;"></div>
+        <div class="leaf" style="top: 120px; left: 70px;"></div>
+        <div class="leaf" style="top: 150px; left: 40px;"></div>
+        <!-- Adicione mais folhas conforme necessário -->
+    </div>
+    <script>
+        document.querySelectorAll('.leaf').forEach(leaf => {
+            leaf.addEventListener('click', () => {
+                leaf.style.top = '300px';  // Move the leaf down
+                leaf.style.transform = 'rotate(720deg)';  // Rotate the leaf
+            });
+        });
+    </script>
+</body>
+</html>

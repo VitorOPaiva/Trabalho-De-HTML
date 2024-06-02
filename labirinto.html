@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Labirinto</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        #maze {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            background-color: white;
+            border: 2px solid black;
+        }
+        .wall {
+            position: absolute;
+            background-color: black;
+        }
+        #player {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="maze">
+        <div id="player"></div>
+        <div class="wall" style="top: 100px; left: 0; width: 300px; height: 20px;"></div>
+        <div class="wall" style="top: 200px; left: 100px; width: 20px; height: 200px;"></div>
+        <!-- Adicione mais paredes conforme necessário -->
+    </div>
+    <script>
+        document.addEventListener('keydown', movePlayer);
+
+        const maze = document.getElementById('maze');
+        const player = document.getElementById('player');
+        const step = 10;
+
+        function movePlayer(event) {
+            const key = event.key;
+            const playerRect = player.getBoundingClientRect();
+            const mazeRect = maze.getBoundingClientRect();
+
+            let newTop = player.offsetTop;
+            let newLeft = player.offsetLeft;
+
+            if (key === 'ArrowUp') newTop -= step;
+            if (key === 'ArrowDown') newTop += step;
+            if (key === 'ArrowLeft') newLeft -= step;
+            if (key === 'ArrowRight') newLeft += step;
+
+            if (newTop < 0 || newLeft < 0 || 
+                newTop + playerRect.height > mazeRect.height || 
+                newLeft + playerRect.width > mazeRect.width || 
+                isColliding(newLeft, newTop)) {
+                // Se colidir, resetar a posição
+                newTop = 0;
+                newLeft = 0;
+            }
+
+            player.style.top = `${newTop}px`;
+            player.style.left = `${newLeft}px`;
+        }
+
+        function isColliding(x, y) {
+            const playerRect = player.getBoundingClientRect();
+            playerRect.x = x + maze.getBoundingClientRect().left;
+            playerRect.y = y + maze.getBoundingClientRect().top;
+
+            const walls = document.querySelectorAll('.wall');
+            for (const wall of walls) {
+                const wallRect = wall.getBoundingClientRect();
+                if (!(playerRect.right < wallRect.left || 
+                      playerRect.left > wallRect.right || 
+                      playerRect.bottom < wallRect.top || 
+                      playerRect.top > wallRect.bottom)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    </script>
+</body>
+</html>
